@@ -3,14 +3,14 @@ CREATE TABLE `artists` (
   `name` varchar(50) not NULL,
   PRIMARY KEY (`artist_id`)
 );
-
   
 CREATE TABLE `albums` (
   `album_id` int NOT NULL AUTO_INCREMENT,
   `artist_id` int NOT NULL,
   `name` varchar(50) not NULL,
   `release_date` date not NULL,
-  PRIMARY KEY (`album_id`,`artist_id`),
+  PRIMARY KEY (`album_id`),
+  unique(`name`,`artist_id`),
   foreign key(`artist_id`) references artists(`artist_id`)
 );
 
@@ -20,7 +20,8 @@ CREATE TABLE `songs` (
   `artist_id` int NOT NULL,
   `title` varchar(100) not NULL,
   `release_date` date NULL,
-  PRIMARY KEY (`song_id`),
+  PRIMARY KEY (`song_id`,artist_id),
+  unique(`title`,`artist_id`),  
   foreign key(`artist_id`) references artists(`artist_id`),
   foreign key(`album_id`) references albums(`album_id`)
 );
@@ -60,7 +61,7 @@ CREATE TABLE `ratings` (
   `album_id` int NULL,
   `playlist_id` int NULL,
   `song_id` int NULL,  
-  `rating_date` int NULL,
+  `rating_date` date NULL,
   PRIMARY KEY (`rating_id`),
   `album_rating` tinyint NULL check (album_rating >0 and album_rating <=5),
   `playlist_rating` tinyint NULL check (playlist_rating >0 and playlist_rating <=5),
